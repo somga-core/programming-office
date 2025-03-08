@@ -43,6 +43,11 @@ class TopBarButton(tk.Button):
             self.bind("<ButtonPress-1>", self.change_text)
 
     def change_text(self, event):
+        if "title" in self.tag:
+            for tag in self.sheet.tag_names():
+                if "title" in tag:
+                    self.sheet.tag_remove(tag, "sel.first", "sel.last")
+
         if self.tag == "reset":
             for tag in self.sheet.tag_names():
                 if tag != 'sel':

@@ -22,10 +22,12 @@ class MainWindow(tk.Tk):
         self.top_bar_buttons = []
 
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
-            "🗀", function=self.sheet.load_file))
+            "🗁", function=self.sheet.load_file))
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
-            "⎘", function=self.sheet.save_file))
+            "🗎", function=self.sheet.save_file))
+        
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet, ""))
+
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
             "R", tag="reset"))
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
@@ -33,12 +35,36 @@ class MainWindow(tk.Tk):
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
             "𝗕", tag="bold"))
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
-            "U̲", tag="underline"))
-        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
             "S̶", tag="overstrike"))
         
-        self.sheet.load_file()
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet, ""))
+
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "T1", tag="title-1"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "T2", tag="title-2"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "T3", tag="title-3"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "T4", tag="title-4"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "T5", tag="title-5"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "T6", tag="title-6"))
+        
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet, ""))
+
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "🖵", tag="code"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "©", tag="quote"))
+        
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet, ""))
+
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "🖻", function=self.sheet.insert_image))
 
 if __name__ == "__main__":
     window = MainWindow()
+    window.sheet.load_file()
     window.mainloop()

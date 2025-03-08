@@ -15,5 +15,6 @@ TEXT_PADDING = 20
 
 # Font
 FONT = "Monospace"
+CODE_FONT = "JetBrains Mono"
 SHEET_FONT_SIZE = 15
 BUTTONS_FONT_SIZE = 15

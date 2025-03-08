@@ -12,6 +12,8 @@ class Sheet(tk.Text):
             borderwidth=0,
             relief="flat",
             foreground=TEXT_COLOR,
+            selectbackground=INTERFACE_COLOR,
+            selectforeground=TEXT_COLOR,
             insertbackground=TEXT_COLOR,
             highlightthickness=False,
             font=(FONT, SHEET_FONT_SIZE)
@@ -29,8 +31,18 @@ class Sheet(tk.Text):
         # Tags configuring
         self.tag_configure("italic", font=(FONT, SHEET_FONT_SIZE, "italic"))
         self.tag_configure("bold", font=(FONT, SHEET_FONT_SIZE, "bold"))
-        self.tag_configure("underline", font=(FONT, SHEET_FONT_SIZE, "underline"))
         self.tag_configure("overstrike", font=(FONT, SHEET_FONT_SIZE, "overstrike"))
+
+        self.tag_configure("title-6", font=(FONT, int(SHEET_FONT_SIZE//2), "bold"))
+        self.tag_configure("title-5", font=(FONT, int(SHEET_FONT_SIZE//1.5), "bold"))
+        self.tag_configure("title-4", font=(FONT, int(SHEET_FONT_SIZE), "bold"))
+        self.tag_configure("title-3", font=(FONT, int(SHEET_FONT_SIZE*1.5), "bold"))
+        self.tag_configure("title-2", font=(FONT, int(SHEET_FONT_SIZE*2), "bold"))
+        self.tag_configure("title-1", font=(FONT, int(SHEET_FONT_SIZE*2.5), "bold"))
+
+        self.tag_configure("code", font=(CODE_FONT, SHEET_FONT_SIZE),
+            background=INTERFACE_COLOR, selectforeground=INTERFACE_COLOR, selectbackground=TEXT_COLOR)
+        self.tag_configure("quote", font=(FONT, int(SHEET_FONT_SIZE*2.5)))
 
     def select_all(self, event):
         self.tag_add(tk.SEL, '1.0', "end")
@@ -47,3 +59,6 @@ class Sheet(tk.Text):
     def save_file(self, event=None):
         with open(self.file_name, "w") as file:
             file.write(self.get(1.0, "end"))
+
+    def insert_image(self):
+        pass
