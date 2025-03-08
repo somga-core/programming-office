@@ -62,3 +62,6 @@ class Sheet(tk.Text):
 
     def insert_image(self):
         pass
+
+    def insert_link(self):
+        pass
