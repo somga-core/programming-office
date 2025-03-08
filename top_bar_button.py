@@ -42,17 +42,22 @@ class TopBarButton(tk.Button):
         elif function is None:
             self.bind("<ButtonPress-1>", self.change_text)
 
-    def change_text(self, event):
-        if "title" in self.tag:
-            for tag in self.sheet.tag_names():
-                if "title" in tag:
-                    self.sheet.tag_remove(tag, "sel.first", "sel.last")
+    def clear_selection_tags(self, tags):
+        for tag in tags:
+            if tag != 'sel':
+                self.sheet.tag_remove(tag, "sel.first", "sel.last")
 
-        if self.tag == "reset":
-            for tag in self.sheet.tag_names():
-                if tag != 'sel':
-                    self.sheet.tag_remove(tag, "sel.first", "sel.last")
-        else:
+    def change_text(self, event):
+        if self.tag in ("reset", "title-1", "title-2", "title-3", "title-4", "title-5", "title-6"):
+            self.clear_selection_tags(self.sheet.tag_names())
+
+        if self.tag in ("quote", "code"):
+            self.clear_selection_tags(("bold", "italic", "overstrike"))
+
+        if self.tag in ("bold", "italic", "overstrike"):
+            self.clear_selection_tags(("quote", "code"))
+
+        if self.tag != "reset":
             self.sheet.tag_add(self.tag, "sel.first", "sel.last")
 
     @staticmethod
