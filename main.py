@@ -65,6 +65,8 @@ class MainWindow(tk.Tk):
             "🖾", function=self.sheet.insert_image))
         self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
             "🖈", function=self.sheet.insert_link))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "🖃", function=self.sheet.insert_code))
 
 if __name__ == "__main__":
     window = MainWindow()

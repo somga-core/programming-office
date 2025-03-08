@@ -65,3 +65,6 @@ class Sheet(tk.Text):
 
     def insert_link(self):
         pass
+
+    def insert_code(self):
+        pass
