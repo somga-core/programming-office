@@ -1,6 +1,11 @@
 import tkinter as tk
 from settings import *
-from time import sleep
+from top_bar import *
+from top_bar_button import *
+from sheet import *
+
+with open("settings.py") as settings_file:
+    exec(settings_file.read())
 
 class MainWindow(tk.Tk):
     def __init__(self):
@@ -10,37 +15,29 @@ class MainWindow(tk.Tk):
         self.config(background=BG_COLOR)
         self.title("Programming office")
 
-        # Variables
-        self.file_name = FILE_NAME
+        # Widgets
+        self.top_bar = TopBar(self)
+        self.sheet = Sheet(self)
 
-        # Elements
-        self.top_bar = tk.Label(
-            self,
-            background=INTERFACE_COLOR,
-            highlightthickness=True,
-            highlightbackground=OUTLINE_COLOR
-        )
-        self.top_bar.pack(side="top", ipady=BAR_WIDTH//2, fill="x")
+        self.top_bar_buttons = []
 
-        self.sheet = tk.Text(
-            self,
-            background=BG_COLOR,
-            borderwidth=0,
-            relief="flat",
-            foreground=TEXT_COLOR,
-            insertbackground=TEXT_COLOR,
-            highlightthickness=False
-        )
-        self.sheet.pack(side="left", fill="both", padx=TEXT_PADDING, pady=TEXT_PADDING)
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "🗀", function=self.sheet.load_file))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "⎘", function=self.sheet.save_file))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet, ""))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "R", tag="reset"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "𝘐", tag="italic"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "𝗕", tag="bold"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "U̲", tag="underline"))
+        self.top_bar_buttons.append(TopBarButton(self.top_bar, self.sheet,
+            "S̶", tag="overstrike"))
         
-        self.scrollbar = tk.Scrollbar(
-            self,
-            orient="vertical",
-            command=self.sheet.yview
-        )
-        self.scrollbar.pack(side="right", fill="y")
-
-        # Binds
+        self.sheet.load_file()
 
 if __name__ == "__main__":
     window = MainWindow()
