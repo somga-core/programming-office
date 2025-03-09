@@ -1,6 +1,8 @@
 from settings import *
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 import tkinter as tk
+from convertor import *
+from sheet_inserted import *
 
 class Sheet(tk.Text):
     def __init__(self, master):
@@ -9,8 +11,7 @@ class Sheet(tk.Text):
         # Settings
         self.configure(
             background=BG_COLOR,
-            borderwidth=0,
-            relief="flat",
+            border=0,
             foreground=TEXT_COLOR,
             selectbackground=INTERFACE_COLOR,
             selectforeground=TEXT_COLOR,
@@ -18,7 +19,7 @@ class Sheet(tk.Text):
             highlightthickness=False,
             font=(FONT, SHEET_FONT_SIZE)
         )
-        self.file_name = FILE_NAME
+        self.file_name = DEFAULT_NAME
 
         # Placing
         self.pack(side="left", fill="both", padx=TEXT_PADDING, pady=TEXT_PADDING)
@@ -26,6 +27,7 @@ class Sheet(tk.Text):
         # Binds
         self.bind("<Control-a>", self.select_all)
         self.bind("<Control-s>", self.save_file)
+        self.bind("<Control-S>", self.save_as_file)
         self.bind("<Control-o>", self.load_file)
 
         # Tags configuring
@@ -51,20 +53,33 @@ class Sheet(tk.Text):
     def load_file(self, event=None):
         self.file_name = askopenfilename(filetypes=FILE_TYPES, initialdir="./")
         if not self.file_name:
-            quit()
+            self.file_name = DEFAULT_NAME
         with open(self.file_name) as file:
             self.delete(1.0, "end")
-            self.insert(1.0, file.read())
+            markdown_to_sheet(file.read(), self)
+        file_name_pathless = self.file_name.split("/")[-1]
+        self.master.title(f"{TITLE} - {file_name_pathless}")
+    
+    def save_as_file(self, event=None):
+        self.file_name = asksaveasfilename(filetypes=FILE_TYPES, initialdir="./")
+        with open(self.file_name, "w") as file:
+            file.write(sheet_to_markdown(self))
 
     def save_file(self, event=None):
         with open(self.file_name, "w") as file:
-            file.write(self.get(1.0, "end"))
+            file.write(sheet_to_markdown(self))
 
-    def insert_image(self):
-        pass
+    def insert_title(self, event):
+        SheetTitle(self)
 
-    def insert_link(self):
-        pass
+    def insert_image(self, event):
+        SheetImage(self)
 
-    def insert_code(self):
-        pass
+    def insert_link(self, event):
+        SheetLink(self)
+
+    def insert_code(self, event):
+        SheetCode(self)
+
+    def insert_quote(self, event):
+        SheetQuote(self)

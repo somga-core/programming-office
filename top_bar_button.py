@@ -4,13 +4,15 @@ import tkinter as tk
 class TopBarButton(tk.Button):
     index = -1
 
-    def __init__(self, master, sheet, text, tag=None, function=None):
+    def __init__(self, master, sheet, tooltip_label, text, tag=None, function=None, tooltip=None):
         super().__init__(master)
 
         # Variables
         self.sheet = sheet
         self.tag = tag
         self.function = function
+        self.tooltip_label = tooltip_label
+        self.tooltip = tooltip
         
         # Settings
         self.configure(
@@ -42,23 +44,34 @@ class TopBarButton(tk.Button):
         elif function is None:
             self.bind("<ButtonPress-1>", self.change_text)
 
+        if not self.tooltip is None:
+            self.bind("<Enter>", self.show_tooltip)
+            self.bind("<Leave>", self.hide_tooltip)
+
     def clear_selection_tags(self, tags):
         for tag in tags:
             if tag != 'sel':
                 self.sheet.tag_remove(tag, "sel.first", "sel.last")
 
     def change_text(self, event):
-        if self.tag in ("reset", "title-1", "title-2", "title-3", "title-4", "title-5", "title-6"):
-            self.clear_selection_tags(self.sheet.tag_names())
-
-        if self.tag in ("quote", "code"):
-            self.clear_selection_tags(("bold", "italic", "overstrike"))
-
-        if self.tag in ("bold", "italic", "overstrike"):
-            self.clear_selection_tags(("quote", "code"))
+        self.clear_selection_tags(self.sheet.tag_names())
 
         if self.tag != "reset":
             self.sheet.tag_add(self.tag, "sel.first", "sel.last")
+
+        if "title" in self.tag:
+            if self.sheet.index("sel.first").split(".")[1] != "0":
+                self.sheet.insert("sel.first", "\n")
+
+            if self.sheet.index("sel.last") != self.sheet.index("sel.last lineend"):
+                self.sheet.insert("sel.last", "\n")
+
+    def show_tooltip(self, event):
+        self.tooltip_label.config(text=self.tooltip)
+        self.tooltip_label.place(x=event.x_root + 10, y=event.y_root - 40)
+
+    def hide_tooltip(self, event):
+        self.tooltip_label.place_forget()
 
     @staticmethod
     def conut_index():

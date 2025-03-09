@@ -1,5 +1,5 @@
 # File
-FILE_NAME = "README.md"
+DEFAULT_NAME = "README.md"
 FILE_TYPES = (("Markdown File", "*.md"),)
 
 # Interface
@@ -13,8 +13,13 @@ OUTLINE_WIDTH = 2
 BUTTONS_PADDING = 10
 TEXT_PADDING = 20
 
+TITLE = "Programming office"
+
+EDIT_DIALOG_HEIGHT = 350
+EDIT_DIALOG_WIDTH = 500
+
 # Font
-FONT = "Monospace"
+FONT = "DejaVu Serif"
 CODE_FONT = "JetBrains Mono"
 SHEET_FONT_SIZE = 15
 BUTTONS_FONT_SIZE = 15
