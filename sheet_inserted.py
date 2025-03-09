@@ -2,6 +2,9 @@ from settings import *
 import tkinter as tk
 from urllib.request import urlopen
 
+with open("settings.py") as settings_file:
+    exec(settings_file.read())
+    
 class EditDialog(tk.Tk):
     def __init__(self, parent):
         super().__init__()

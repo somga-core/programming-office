@@ -1,6 +1,9 @@
 from settings import *
 import tkinter as tk
 
+with open("settings.py") as settings_file:
+    exec(settings_file.read())
+
 class TopBarButton(tk.Button):
     index = -1
 
@@ -51,13 +54,19 @@ class TopBarButton(tk.Button):
     def clear_selection_tags(self, tags):
         for tag in tags:
             if tag != 'sel':
-                self.sheet.tag_remove(tag, "sel.first", "sel.last")
+                try:
+                    self.sheet.tag_remove(tag, "sel.first", "sel.last")
+                except tk.TclError:
+                    pass
 
     def change_text(self, event):
         self.clear_selection_tags(self.sheet.tag_names())
 
         if self.tag != "reset":
-            self.sheet.tag_add(self.tag, "sel.first", "sel.last")
+            try:
+                self.sheet.tag_add(self.tag, "sel.first", "sel.last")
+            except tk.TclError:
+                pass
 
         if "title" in self.tag:
             if self.sheet.index("sel.first").split(".")[1] != "0":

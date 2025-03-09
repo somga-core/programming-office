@@ -1,6 +1,9 @@
 from settings import *
 import tkinter as tk
 
+with open("settings.py") as settings_file:
+    exec(settings_file.read())
+
 class TopBar(tk.Label):
     def __init__(self, master):
         super().__init__(master)

@@ -4,6 +4,9 @@ import tkinter as tk
 from convertor import *
 from sheet_inserted import *
 
+with open("settings.py") as settings_file:
+    exec(settings_file.read())
+    
 class Sheet(tk.Text):
     def __init__(self, master):
         super().__init__(master)
@@ -32,9 +35,9 @@ class Sheet(tk.Text):
         self.bind("<KeyRelease>", self.update_text)
 
         # Tags configuring
-        self.tag_configure("italic", font=(FONT, SHEET_FONT_SIZE, "italic"))
+        self.tag_configure("italic", font=(FONT, SHEET_FONT_SIZE, "italic"), background=INTERFACE_COLOR)
         self.tag_configure("bold", font=(FONT, SHEET_FONT_SIZE, "bold"))
-        self.tag_configure("overstrike", font=(FONT, SHEET_FONT_SIZE, "overstrike"))
+        self.tag_configure("overstrike", font=(FONT, SHEET_FONT_SIZE, "overstrike"), background=INTERFACE_COLOR)
 
         self.tag_configure("title-6", font=(FONT, int(SHEET_FONT_SIZE//2), "bold"))
         self.tag_configure("title-5", font=(FONT, int(SHEET_FONT_SIZE//1.5), "bold"))
@@ -44,7 +47,7 @@ class Sheet(tk.Text):
         self.tag_configure("title-1", font=(FONT, int(SHEET_FONT_SIZE*2.5), "bold"))
 
         self.tag_configure("code", font=(CODE_FONT, SHEET_FONT_SIZE),
-            background=INTERFACE_COLOR, selectforeground=INTERFACE_COLOR, selectbackground=TEXT_COLOR)
+            background=INTERFACE_COLOR, selectforeground=TEXT_COLOR, selectbackground=OUTLINE_COLOR)
         self.tag_configure("quote", font=(FONT, int(SHEET_FONT_SIZE*2.5)))
 
     def select_all(self, event):
