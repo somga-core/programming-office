@@ -46,7 +46,7 @@ print("abcd")
 > abcd
 
 [abcd](http://example.com/ "abcd")
-![abcd](https://upload.wikimedia.org/wikipedia/commons/9/94/Markdown_Syntax_in_gedit.png "abcd")
+![abcd](https://www.python.org/static/img/python-logo.png "abcd")
 
 
 

@@ -132,6 +132,8 @@ class SheetInserted(tk.Button):
 
     def create(self):
         self.sheet.window_create("insert", window=self)
+        self.sheet.update_text()
+        self.sheet.update_text()
 
     def update(self):
         pass

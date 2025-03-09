@@ -29,6 +29,7 @@ class Sheet(tk.Text):
         self.bind("<Control-s>", self.save_file)
         self.bind("<Control-S>", self.save_as_file)
         self.bind("<Control-o>", self.load_file)
+        self.bind("<KeyRelease>", self.update_text)
 
         # Tags configuring
         self.tag_configure("italic", font=(FONT, SHEET_FONT_SIZE, "italic"))
@@ -83,3 +84,12 @@ class Sheet(tk.Text):
 
     def insert_quote(self, event):
         SheetQuote(self)
+
+    def update_text(self, event=None):
+        for window_name in self.window_names():
+            if not "sheetlink" in window_name and not "sheetimage" in window_name:
+                index = self.index(window_name)
+                if self.index(f"{index}+1c") != self.index(f"{index} lineend"):
+                    self.insert(f"{index}+1c", "\n")
+                if str(index).split(".")[1] != "0":
+                    self.insert(index, "\n")
