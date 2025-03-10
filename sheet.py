@@ -35,9 +35,9 @@ class Sheet(tk.Text):
         self.bind("<KeyRelease>", self.update_text)
 
         # Tags configuring
-        self.tag_configure("italic", font=(FONT, SHEET_FONT_SIZE, "italic"), background=INTERFACE_COLOR)
+        self.tag_configure("italic", font=(FONT, SHEET_FONT_SIZE, "italic"))
         self.tag_configure("bold", font=(FONT, SHEET_FONT_SIZE, "bold"))
-        self.tag_configure("overstrike", font=(FONT, SHEET_FONT_SIZE, "overstrike"), background=INTERFACE_COLOR)
+        self.tag_configure("overstrike", font=(FONT, SHEET_FONT_SIZE, "overstrike"))
 
         self.tag_configure("title-6", font=(FONT, int(SHEET_FONT_SIZE//2), "bold"))
         self.tag_configure("title-5", font=(FONT, int(SHEET_FONT_SIZE//1.5), "bold"))

@@ -1,70 +1,49 @@
 import tkinter as tk
 
 def markdown_to_sheet(markdown, sheet):
-    # buffer = ""
     for symbol_index in range(len(markdown)):
         symbol = markdown[symbol_index]
-        # prev_symbol = markdown[symbol_index - 1] if symbol_index > 0 else ""
-        # next_symbol = markdown[symbol_index + 1] if symbol_index < len(markdown)-1 else ""
-
-        # # Inserting symbol
-        # for tag in sheet.tag_names():
-        #     if tag != 'sel':
-        #         sheet.tag_remove(tag, "end-1c", "end+1c")
         sheet.insert("end-1c", symbol)
 
-        # Setting buffer
-        # if "D" in buffer:
-        #     for tag in sheet.tag_names():
-        #         if tag != 'sel':
-        #             sheet.tag_remove(tag, "end-3c", "end")
-        #     buffer = buffer.replace("D", "")
-
-        # if not "/" in buffer:
-        #     if "d" in buffer:
-        #         sheet.delete("end-2c", "end-1c")
-        #         buffer = buffer.replace("d", "")
-        #     else:
-        #         if symbol == "*" or symbol == "_":
-        #             if not "i" in buffer:
-        #                 buffer += "i"
-        #                 buffer += "D"
-        #             else:
-        #                 buffer = buffer.replace("i", "")
-        #             sheet.delete("end-2c", "end-1c")
-
-        #     if (symbol == next_symbol == "*" or symbol == next_symbol == "_"):
-        #         if not "b" in buffer:
-        #             buffer += "b"
-        #             buffer += "D"
-        #         else:
-        #             buffer = buffer.replace("b", "")
-        #         buffer += "d"
-
-        #     if symbol == "`" or symbol == "`":
-        #         if not "c" in buffer:
-        #             buffer += "c"
-        #             buffer += "D"
-        #         else:
-        #             buffer = buffer.replace("c", "")
-        #         sheet.delete("end-2c", "end-1c")
-        # else:
-        #     buffer = buffer.replace("/", "")
-        #     print(buffer)
-        
-        # if symbol == "\\":
-        #     buffer += "/"
-        #     sheet.delete("end-2c", "end-1c")
-
-        # # Setting style
-        # if "b" in buffer:
-        #     sheet.tag_add("bold", "end-2c")
-        # if "i" in buffer:
-        #     sheet.tag_add("italic", "end-2c")
-        # if "c" in buffer:
-        #     sheet.tag_add("code", "end-2c")
-
 def sheet_to_markdown(sheet):
-    result = sheet.get(1.0, "end")
+    tag_symbols = {
+        "italic": "*",
+        "bold": "**",
+        "overstrike": "~~",
+        "code": "`"
+    }
+
+    end_index = sheet.index("end-1c")
+    current_index = "1.0"
+    result = ""
+    tag_starts = {}
+    tag_ends = {}
+
+    for tag in sheet.tag_names():
+        if tag != "sel":
+            tag_ranges = sheet.tag_ranges(tag)
+            for tag_range_index in range(len(tag_ranges)):
+                if tag_range_index % 2 == 0:
+                    tag_starts[str(tag_ranges[tag_range_index])] = tag
+                else:
+                    tag_ends[str(sheet.index(f"{tag_ranges[tag_range_index]}-1c"))] = tag  
+
+    while current_index != end_index:
+        next_index = str(sheet.index(f"{current_index}+1c"))
+
+        symbol = sheet.get(current_index, next_index)
+
+        if current_index in tag_starts:
+            result += tag_symbols[tag_starts[current_index]]
+
+        if symbol in tuple(tag_symbols.values()):
+            result += "\\"
+
+        result += symbol
+
+        if current_index in tag_ends:
+            result += tag_symbols[tag_ends[current_index]]
+        
+        current_index = str(sheet.index(next_index))
 
     return result
