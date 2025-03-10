@@ -1,18 +1,27 @@
 import tkinter as tk
 
+tag_export_symbols = {
+    "italic": "*",
+    "bold": "**",
+    "overstrike": "~~",
+    "code": "`"
+}
+
+tag_import_symbols = {
+    "**": "italic",
+    "__": "italic",
+    "*": "bold",
+    "_": "bold",
+    "~~": "overstrike",
+    "`": "code"
+}
+
 def markdown_to_sheet(markdown, sheet):
     for symbol_index in range(len(markdown)):
         symbol = markdown[symbol_index]
         sheet.insert("end-1c", symbol)
 
 def sheet_to_markdown(sheet):
-    tag_symbols = {
-        "italic": "*",
-        "bold": "**",
-        "overstrike": "~~",
-        "code": "`"
-    }
-
     end_index = sheet.index("end-1c")
     current_index = "1.0"
     result = ""
@@ -34,15 +43,15 @@ def sheet_to_markdown(sheet):
         symbol = sheet.get(current_index, next_index)
 
         if current_index in tag_starts:
-            result += tag_symbols[tag_starts[current_index]]
+            result += tag_export_symbols[tag_starts[current_index]]
 
-        if symbol in tuple(tag_symbols.values()):
+        if symbol in tag_import_symbols:
             result += "\\"
 
         result += symbol
 
         if current_index in tag_ends:
-            result += tag_symbols[tag_ends[current_index]]
+            result += tag_export_symbols[tag_ends[current_index]]
         
         current_index = str(sheet.index(next_index))
 
