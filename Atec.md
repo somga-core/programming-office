@@ -1,2 +1,0 @@
-aidpsaid\*\*\*
-sadasd
